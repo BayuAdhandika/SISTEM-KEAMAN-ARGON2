@@ -1,103 +1,105 @@
-# 🔐 Sistem Autentikasi Password Berbasis Argon2id + Salt
+# 🔐 Sistem Autentikasi Password Berbasis Argon2id Manual
 
-## 📖 Deskripsi Proyek
+## 📖 Deskripsi
 
-Proyek ini merupakan implementasi sistem autentikasi berbasis web yang menggunakan algoritma **Argon2id** dan mekanisme **Salt** untuk meningkatkan keamanan penyimpanan password pengguna.
+Proyek ini merupakan implementasi sistem autentikasi berbasis web yang menerapkan algoritma **Argon2id** secara manual menggunakan JavaScript. Sistem dirancang untuk mengamankan password pengguna dengan teknik **hashing** dan **salt unik** pada setiap akun.
 
-Sistem menyediakan fitur **Registrasi** dan **Login**, di mana password tidak disimpan dalam bentuk asli (*plaintext*), melainkan diubah menjadi nilai **hash** menggunakan pendekatan Argon2id sebelum disimpan.
+Password tidak disimpan dalam bentuk asli (*plaintext*), melainkan diubah menjadi nilai hash sebelum disimpan. Saat proses login, password yang dimasukkan pengguna akan di-hash kembali dan dibandingkan dengan hash yang tersimpan.
 
-Tujuan utama proyek ini adalah memahami konsep keamanan password modern, khususnya penggunaan algoritma hashing yang tahan terhadap serangan **Brute Force**, **Rainbow Table**, dan berbagai metode cracking lainnya.
+Proyek ini dibuat untuk tujuan pembelajaran dan pemahaman konsep keamanan password modern, khususnya implementasi hashing berbasis Argon2id.
 
 ---
 
 ## ✨ Fitur Utama
 
-* 🔐 Registrasi pengguna dengan hashing password Argon2id
-* 🧂 Salt acak 16-byte untuk setiap pengguna
-* 🔄 Verifikasi password melalui proses hashing ulang
-* 📊 Password Strength Indicator
-* 📜 Process Log real-time
-* 💾 Penyimpanan data menggunakan Local Storage
-* 👀 Database Viewer untuk melihat data hash dan salt yang tersimpan
-* 🚫 Password asli tidak pernah disimpan
+* Registrasi pengguna
+* Login dan verifikasi password
+* Implementasi Argon2id secara manual menggunakan JavaScript
+* Salt unik untuk setiap pengguna
+* Password Strength Indicator
+* Process Log untuk menampilkan proses hashing
+* Database Viewer
+* Penyimpanan data menggunakan Local Storage
+* Password asli tidak pernah disimpan
 
 ---
 
-## 🛡️ Teknologi Keamanan
+## 🛡️ Konsep Keamanan
 
-### Argon2id
+### Hashing Password
 
-Argon2id merupakan algoritma hashing modern yang memenangkan **Password Hashing Competition (PHC) 2015**.
-
-Keunggulan Argon2id:
-
-* Memory-hard hashing
-* Tahan terhadap serangan GPU dan ASIC
-* Tahan terhadap brute force attack
-* Direkomendasikan untuk sistem autentikasi modern
+Password pengguna diproses menggunakan algoritma hashing sehingga tidak dapat dikembalikan ke bentuk aslinya.
 
 ### Salt
 
-Salt adalah data acak yang ditambahkan ke password sebelum proses hashing.
+Setiap password diberikan salt acak sebelum proses hashing.
 
 Manfaat penggunaan salt:
 
-* Password yang sama menghasilkan hash berbeda
+* Menghasilkan hash yang berbeda untuk password yang sama
 * Mencegah Rainbow Table Attack
-* Meningkatkan keamanan database password
+* Meningkatkan keamanan data pengguna
+
+### Argon2id
+
+Argon2id merupakan algoritma hashing modern yang dirancang untuk:
+
+* Tahan terhadap brute force attack
+* Menggunakan pendekatan memory-hard
+* Meningkatkan biaya komputasi bagi penyerang
+* Menjadi salah satu standar hashing password modern
 
 ---
 
-## ⚙️ Parameter Hashing
+## ⚙️ Parameter Implementasi
 
-| Parameter          | Nilai                            |
-| ------------------ | -------------------------------- |
-| Algoritma          | Argon2id (Manual Implementation) |
-| Memory Block       | 4096                             |
-| Iteration / Passes | 3                                |
-| Parallelism        | 1                                |
-| Salt Length        | 16 Byte                          |
-| Hash Length        | 32 Byte                          |
+| Parameter           | Nilai   |
+| ------------------- | ------- |
+| Memory Blocks       | 4096    |
+| Passes / Iterations | 3       |
+| Lanes               | 1       |
+| Hash Length         | 32 Byte |
+| Salt Length         | 16 Byte |
 
 ---
 
-## 🏗️ Struktur Sistem
+## 🏗️ Alur Sistem
+
+### Registrasi
 
 ```text
-Pengguna
-    │
-    ▼
 Input Username & Password
-    │
-    ▼
+        │
+        ▼
 Generate Salt Acak
-    │
-    ▼
+        │
+        ▼
 Password + Salt
-    │
-    ▼
+        │
+        ▼
 Hashing Argon2id
-    │
-    ▼
+        │
+        ▼
 Simpan Hash & Salt
 ```
 
-### Saat Login
+### Login
 
 ```text
 Input Username & Password
-    │
-    ▼
-Ambil Salt dari Database
-    │
-    ▼
-Hash Password Input
-    │
-    ▼
+        │
+        ▼
+Ambil Salt Tersimpan
+        │
+        ▼
+Hashing Ulang Password
+        │
+        ▼
 Bandingkan Hash
-    │
-    ├── Cocok  → Login Berhasil
-    └── Tidak → Login Ditolak
+        │
+ ┌──────┴──────┐
+ ▼             ▼
+Berhasil     Gagal
 ```
 
 ---
@@ -108,56 +110,21 @@ Bandingkan Hash
 * CSS3
 * JavaScript (Vanilla JS)
 * Local Storage
-* Web Crypto API
+* Implementasi Manual Argon2id
+* Browser Crypto API (`crypto.getRandomValues`) untuk pembangkitan salt
 
 ---
 
-## 🚀 Cara Menjalankan
+## 📂 Struktur Data
 
-1. Clone repository:
-
-```bash
-git clone https://github.com/username/argon2-auth.git
-```
-
-2. Masuk ke folder proyek:
-
-```bash
-cd argon2-auth
-```
-
-3. Jalankan file:
-
-```bash
-Argon2Final.html
-```
-
-atau buka langsung menggunakan browser:
-
-```text
-Google Chrome
-Microsoft Edge
-Firefox
-```
-
----
-
-## 📂 Penyimpanan Data
-
-Saat ini sistem menggunakan:
-
-```javascript
-localStorage
-```
-
-Data yang disimpan:
+Data pengguna disimpan pada Local Storage dengan format:
 
 ```json
 {
   "username": {
-    "salt": "...",
-    "hash": "...",
-    "time": "...",
+    "salt": "salt_hex",
+    "hash": "hash_argon2id",
+    "time": "tanggal_waktu",
     "params": "mem=4096;pass=3;hashLen=32"
   }
 }
@@ -165,75 +132,99 @@ Data yang disimpan:
 
 ---
 
-## 🧪 Pengujian Sistem
+## 🚀 Cara Menjalankan
 
-### Registrasi
+1. Download atau clone repository.
 
-✅ Username dan password berhasil disimpan
+```bash
+git clone https://github.com/username/argon2-auth.git
+```
 
-✅ Salt dibuat otomatis
+2. Masuk ke folder proyek.
 
-✅ Hash Argon2id berhasil dibuat
+```bash
+cd argon2-auth
+```
+
+3. Buka file:
+
+```text
+index.html
+```
+
+4. Jalankan menggunakan browser:
+
+* Google Chrome
+* Microsoft Edge
+* Mozilla Firefox
 
 ---
+
+## 🧪 Pengujian
 
 ### Login
 
-✅ Password benar → Login berhasil
+| Kondisi                  | Hasil          |
+| ------------------------ | -------------- |
+| Password benar           | Login berhasil |
+| Password salah           | Login ditolak  |
+| Username tidak ditemukan | Login ditolak  |
 
-❌ Password salah → Login ditolak
+### Integritas Hash
+
+Perubahan satu karakter pada password menghasilkan hash yang berbeda secara signifikan.
+
+### Ketahanan Dasar
+
+Sistem dirancang untuk memberikan perlindungan terhadap:
+
+* Brute Force Attack
+* Rainbow Table Attack
+* Kebocoran database password
 
 ---
 
-### Integritas Data
+## 📌 Kelebihan
 
-Perubahan satu karakter password menghasilkan hash yang berbeda secara signifikan.
-
----
-
-## 📌 Kelebihan Sistem
-
-* Menggunakan konsep keamanan modern
+* Implementasi hashing dilakukan secara manual
 * Password tidak disimpan dalam bentuk plaintext
-* Salt unik untuk setiap pengguna
-* Tahan terhadap Rainbow Table Attack
-* Tampilan interaktif dan edukatif
+* Menggunakan salt unik untuk setiap pengguna
+* Tampilan interaktif dan informatif
 * Menampilkan proses hashing secara real-time
+* Cocok sebagai media pembelajaran keamanan password
 
 ---
 
 ## ⚠️ Keterbatasan
 
-* Implementasi Argon2id masih bersifat manual untuk tujuan pembelajaran
 * Belum menggunakan library Argon2 resmi
+* Implementasi masih bersifat edukatif
+* Menggunakan Local Storage sebagai penyimpanan data
 * Belum memiliki backend server
-* Masih menggunakan Local Storage sebagai database sementara
-* Belum dirancang untuk penggunaan skala produksi
+* Belum dirancang untuk lingkungan produksi
 
 ---
 
 ## 🔮 Pengembangan Selanjutnya
 
-Beberapa fitur yang dapat ditambahkan:
+Beberapa pengembangan yang dapat dilakukan:
 
-* Backend menggunakan Node.js / Express
+* Integrasi backend menggunakan Node.js atau PHP
 * Database MySQL atau PostgreSQL
 * HTTPS
 * JWT Authentication
 * Multi-Factor Authentication (MFA)
 * One-Time Password (OTP)
 * Rate Limiting
-* Implementasi Argon2 resmi
+* Implementasi Argon2 resmi sesuai standar industri
 
 ---
 
-## 👨‍💻 Tim Pengembang
+## 👨‍💻 Pengembang
 
-**Bayu Adhandika** (2401020011)
-
-**Al Adlhu Sodri Niwrad** (2401020015)
-
-**Muhammad Al Fikry Akbar** (2401020031)
+**Bayu Adhandika**
+**Al Adlhu Sodri Niwrad**
+**Muhammad Al Fikry Akbar**
 
 Program Studi Teknik Informatika
 Fakultas Teknik dan Teknologi Kemaritiman
@@ -243,4 +234,4 @@ Universitas Maritim Raja Ali Haji
 
 ## 📄 Lisensi
 
-Proyek ini dibuat untuk tujuan pembelajaran dan pengembangan akademik.
+Proyek ini dibuat untuk tujuan pembelajaran, penelitian, dan pengembangan akademik.
